@@ -1,16 +1,20 @@
 #cloud-config
 # hostname: hypervisor
-users: 
-  # This is only useful for testing purposes
-  - name: ubuntu
-    passwd: "$1$dZdt8Ci5$2zmeJ.KvtrZNeh6E5btoq/"
-    groups:
-      - sudo
-      - adm
-      - plugdev
-      - cdrom
-    lock_password: false
-packages:
-  - git
-  - openvswitch-switch-dpdk
-  - uvtool-libvirt
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: en
+    variant: us
+  storage:
+    layout:
+        name: lvm
+  ssh:
+    install-server: yes
+  identity:
+    username: ubuntu
+    password: "$1$dZdt8Ci5$2zmeJ.KvtrZNeh6E5btoq/"
+  packages:
+    - git
+    - openvswitch-switch-dpdk
+    - uvtool-libvirt
