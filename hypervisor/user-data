@@ -15,7 +15,4 @@ autoinstall:
     realname: default user
     username: ubuntu
     password: "$1$dZdt8Ci5$2zmeJ.KvtrZNeh6E5btoq/"
-  packages:
-    - git
-    - openvswitch-switch-dpdk
-    - uvtool-libvirt
+  
