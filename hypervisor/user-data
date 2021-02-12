@@ -1,5 +1,4 @@
 #cloud-config
-# hostname: hypervisor
 autoinstall:
   version: 1
   locale: en_US
