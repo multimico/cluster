@@ -11,6 +11,8 @@ autoinstall:
   ssh:
     install-server: yes
   identity:
+    hostname: test1
+    realname: default user
     username: ubuntu
     password: "$1$dZdt8Ci5$2zmeJ.KvtrZNeh6E5btoq/"
   packages:
