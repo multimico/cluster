@@ -1,7 +1,7 @@
 #cloud-config
 autoinstall:
   refresh-installer:
-    update: true
+    update: false
   apt:
     geoip: false
     preserve_sources_list: false
