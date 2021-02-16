@@ -1,18 +1,127 @@
 #cloud-config
 autoinstall:
-  version: 1
-  locale: en_US
-  keyboard:
-    layout: en
-    variant: us
-  storage:
-    layout:
-        name: lvm
-  ssh:
-    install-server: yes
+  refresh-installer:
+    update: true
+  apt:
+    geoip: false
+    preserve_sources_list: false
+    primary:
+    - arches: [amd64, i386]
+      uri: http://ch.archive.ubuntu.com/ubuntu
+    - arches: [default]
+      uri: http://ports.ubuntu.com/ubuntu-ports
+  packages:
+    - petname 
+    - openvswitch-switch-dpdk
+    - libosinfo-bin
   identity:
-    hostname: test1
-    realname: default user
-    username: ubuntu
-    password: "$1$dZdt8Ci5$2zmeJ.KvtrZNeh6E5btoq/"
-  
+    hostname: multimico1
+    password: "$6$6vGN7n+j$3m8m80eBdCGVeiC76W4c7pjKFoEhBzhDcwgxFgkWiAAOZUvGeo2K00xTCXN9zL/7pLyXSy5EWT6eD1z3GPeCh0"
+    realname: MultiMICO Admin
+    username: admin
+  keyboard: 
+    layout: us
+    toggle: null
+    variant: ''
+  locale: C
+  network:
+    ethernets:
+      eno1: 
+        dhcp4: true
+    version: 2
+  ssh:
+    allow-pw: false
+    authorized-keys: 
+      - phish108@github/41366567
+      - phish108@github/41477194 
+      - phish108@github/46307296 
+      - phish108@github/49807780 
+    install-server: true
+  storage:
+    config:
+    # drive Hardware
+    - ptable: gpt
+      # serial: SanDisk_SD9SN8W2T001122_20233B800056
+      # wwn: '0x5001b448b5723436'
+      path: /dev/sda
+      wipe: superblock
+      preserve: false
+      name: ''
+      grub_device: false
+      type: disk
+      id: disk-sda
+      match:
+        # ssd: yes
+        size: largest
+    # efi (bios partition) ~512MB
+    - device: disk-sda
+      size: 536870912
+      wipe: superblock
+      flag: boot
+      number: 1
+      preserve: false
+      grub_device: true
+      type: partition
+      id: partition-0
+    - fstype: fat32
+      volume: partition-0
+      preserve: false
+      type: format
+      id: format-0
+    - device: format-0
+      path: /boot/efi
+      type: mount
+      id: mount-0
+    # 1GB Boot Partition
+    - device: disk-sda
+      size: 1073741824
+      wipe: superblock
+      flag: ''
+      number: 2
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-1
+    - fstype: btrfs
+      volume: partition-1
+      preserve: false
+      type: format
+      id: format-1
+    - device: format-1
+      path: /boot
+      type: mount
+      id: mount-1
+    # ~ 1.8TB System Data
+    - device: disk-sda
+      # size: 2046795186176
+      # use all the remaining space (in case we have different drive sizes)
+      size: -1
+      wipe: superblock
+      flag: ''
+      number: 3
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-2
+    - name: ubuntu-vg
+      devices: 
+        - partition-2
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      volgroup: lvm_volgroup-0
+      size: 214748364800B
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
+    - fstype: btrfs
+      volume: lvm_partition-0
+      preserve: false
+      type: format
+      id: format-2
+    - device: format-2
+      path: /
+      type: mount
+      id: mount-2
+  version: 1
