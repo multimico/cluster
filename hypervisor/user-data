@@ -13,16 +13,13 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: false
-  user-data:
+  identity: 
     hostname: multimico1
+    username: dxiai
+    passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
+  user-data:
     users: 
       - name: dxiai
-        passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
-        groups:
-          - sudo
-          - adm
-          - plugdev
-          - cdrom
         ssh_import_id: "gh:phish108"
         lock_password: false
   keyboard: 
@@ -30,11 +27,11 @@ autoinstall:
     toggle: null
     variant: ''
   locale: C
-  network:
-    ethernets:
-      eno1: 
-        dhcp4: true
-    version: 2
+  #network:
+  #  ethernets:
+  #    eno1: 
+  #      dhcp4: true
+  #  version: 2
   storage:
     layout:
       name: lvm
