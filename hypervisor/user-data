@@ -25,7 +25,7 @@ autoinstall:
         lock_password: false
     package_update: true
     package_upgrade: true
-    # package_reboot_if_required: true
+    package_reboot_if_required: true
     packages:
       - petname
       - openvswitch-switch-dpdk
