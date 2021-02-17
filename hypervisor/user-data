@@ -36,12 +36,10 @@ autoinstall:
   locale: C
   network:
     version: 2
-    renderer: networkd
     ethernets:
       maineth:
         match:
           name: "en*"
-        set-name: maineth
         dhcp4: true
   storage:
     layout:
