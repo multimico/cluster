@@ -16,7 +16,7 @@ autoinstall:
   identity: 
     hostname: multimico1
     username: dxiai
-    passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
+    password: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
   user-data:
     users: 
       - name: dxiai
