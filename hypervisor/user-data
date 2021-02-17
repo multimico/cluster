@@ -10,10 +10,10 @@ autoinstall:
       uri: http://ch.archive.ubuntu.com/ubuntu
     - arches: [default]
       uri: http://ports.ubuntu.com/ubuntu-ports
-  packages:
-    - petname 
-    - openvswitch-switch-dpdk
-    - libosinfo-bin
+  # packages:
+  #  - petname 
+  #  - openvswitch-switch-dpdk
+  #  - libosinfo-bin
   identity:
     hostname: multimico1
     password: "$6$6vGN7n+j$3m8m80eBdCGVeiC76W4c7pjKFoEhBzhDcwgxFgkWiAAOZUvGeo2K00xTCXN9zL/7pLyXSy5EWT6eD1z3GPeCh0"
