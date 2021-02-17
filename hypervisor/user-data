@@ -36,15 +36,13 @@ autoinstall:
   locale: C
   network:
     version: 2
+    renderer: networkd
     ethernets:
       maineth:
         match:
           name: "en*"
+        set-name: maineth
         dhcp4: true
-  #  ethernets:
-  #    eno1: 
-  #      dhcp4: true
-  #  version: 2
   storage:
     layout:
       name: lvm
