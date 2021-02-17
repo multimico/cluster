@@ -39,8 +39,12 @@ autoinstall:
     ethernets:
       maineth:
         match:
-          name: en*
-        dhcp: true
+          name: "en*"
+        dhcp4: true
+  #  ethernets:
+  #    eno1: 
+  #      dhcp4: true
+  #  version: 2
   storage:
     layout:
       name: lvm
