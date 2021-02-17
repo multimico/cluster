@@ -28,7 +28,7 @@ autoinstall:
           - adm
           - plugdev
           - cdrom
-        lock_password: false
+        lock_passwd: false
     package_update: true
     package_upgrade: true
     package_reboot_if_required: true
