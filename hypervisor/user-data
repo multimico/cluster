@@ -23,7 +23,7 @@ autoinstall:
     users: 
       - name: dxiai
         passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
-        ssh_import_id: gh:phish108, gh:bajkad
+        ssh_import_id: gh:phish108
         groups:
           - sudo
           - lxd
@@ -32,6 +32,8 @@ autoinstall:
           - cdrom
         lock_passwd: false
         shell: /bin/bash
+      - name: dxiai
+        ssh_import_id: gh:bajkad
     package_update: true
     package_upgrade: true
     package_reboot_if_required: true
