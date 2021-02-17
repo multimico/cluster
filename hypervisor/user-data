@@ -1,7 +1,10 @@
 #cloud-config
 autoinstall:
+  version: 1
+
   refresh-installer:
     update: no
+
   apt:
     geoip: true
     preserve_sources_list: false
@@ -13,10 +16,22 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: false
-  # identity: 
-  #  hostname: multimico
-  #  username: dxiai0
-  #  password: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
+  keyboard: 
+    layout: us
+    toggle: null
+    variant: ''
+  locale: C
+  network:
+    version: 2
+    ethernets:
+      maineth:
+        match:
+          name: "en*"
+        dhcp4: true
+  storage:
+    layout:
+      name: lvm
+  
   user-data:
     timezone: Europe/Zurich
     hostname: multimico
@@ -41,19 +56,4 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-  keyboard: 
-    layout: us
-    toggle: null
-    variant: ''
-  locale: C
-  network:
-    version: 2
-    ethernets:
-      maineth:
-        match:
-          name: "en*"
-        dhcp4: true
-  storage:
-    layout:
-      name: lvm
-  version: 1
+  
