@@ -24,7 +24,7 @@ autoinstall:
         ssh_import_id: "gh:phish108"
         groups:
           - sudo
-          - lxc
+          - lxd
           - adm
           - plugdev
           - cdrom
