@@ -8,14 +8,10 @@ autoinstall:
        uri: http://archive.ubuntu.com/ubuntu
      - arches: [default]
        uri: http://ports.ubuntu.com/ubuntu-ports
-  # packages:
-  #  - petname 
-  #  - openvswitch-switch-dpdk
-  #  - libosinfo-bin
   identity:
     hostname: multimico1
     password: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
-    realname: MultiMICO Admin
+    realname: "MultiMICO Admin"
     username: dxiai
   keyboard: 
     layout: us
@@ -27,14 +23,6 @@ autoinstall:
       eno1: 
         dhcp4: true
     version: 2
-  # ssh:
-  #   allow-pw: false
-  #   authorized-keys: 
-  #     - phish108@github/41366567
-  #     - phish108@github/41477194 
-  #     - phish108@github/46307296 
-  #     - phish108@github/49807780 
-  #   install-server: true
   storage:
     layout:
       name: lvm
