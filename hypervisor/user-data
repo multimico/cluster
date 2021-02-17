@@ -4,10 +4,10 @@ autoinstall:
     geoip: true
     preserve_sources_list: false
     primary:
-    # - arches: [amd64, i386]
-    #   uri: http://ch.archive.ubuntu.com/ubuntu
-    # - arches: [default]
-    #   uri: http://ports.ubuntu.com/ubuntu-ports
+     - arches: [amd64, i386]
+       uri: http://archive.ubuntu.com/ubuntu
+     - arches: [default]
+       uri: http://ports.ubuntu.com/ubuntu-ports
   # packages:
   #  - petname 
   #  - openvswitch-switch-dpdk
@@ -16,7 +16,7 @@ autoinstall:
     hostname: multimico1
     password: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
     realname: MultiMICO Admin
-    username: admin
+    username: dxiai
   keyboard: 
     layout: us
     toggle: null
