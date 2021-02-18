@@ -29,8 +29,92 @@ autoinstall:
           name: "en*"
         dhcp4: true
   storage:
-    layout:
-      name: lvm
+    config:
+    # drive Hardware
+      - ptable: gpt
+        # serial: SanDisk_SD9SN8W2T001122_20233B800056
+        # wwn: '0x5001b448b5723436'
+        path: /dev/sda
+        wipe: superblock
+        preserve: false
+        name: ''
+        grub_device: false
+        type: disk
+        id: disk-sda
+        match:
+          # ssd: yes
+          size: largest
+      # efi (bios partition) ~512MB
+      - device: disk-sda
+        size: 536870912
+        wipe: superblock
+        flag: boot
+        number: 1
+        preserve: false
+        grub_device: true
+        type: partition
+        id: partition-0
+      - fstype: fat32
+        volume: partition-0
+        preserve: false
+        type: format
+        id: format-0
+      - device: format-0
+        path: /boot/efi
+        type: mount
+        id: mount-0
+      # 1GB Boot Partition
+      - device: disk-sda
+        size: 1073741824
+        wipe: superblock
+        flag: ''
+        number: 2
+        preserve: false
+        grub_device: false
+        type: partition
+        id: partition-1
+      - fstype: btrfs
+        volume: partition-1
+        preserve: false
+        type: format
+        id: format-1
+      - device: format-1
+        path: /boot
+        type: mount
+        id: mount-1
+      # ~ 1.8TB System Data
+      - device: disk-sda
+        # size: 2046795186176
+        # use all the remaining space (in case we have different drive sizes)
+        size: -1
+        wipe: superblock
+        flag: ''
+        number: 3
+        preserve: false
+        grub_device: false
+        type: partition
+        id: partition-2
+      - name: ubuntu-vg
+        devices: 
+          - partition-2
+        preserve: false
+        type: lvm_volgroup
+        id: lvm_volgroup-0
+      - name: ubuntu-lv
+        volgroup: lvm_volgroup-0
+        size: 214748364800B
+        preserve: false
+        type: lvm_partition
+        id: lvm_partition-0
+      - fstype: btrfs
+        volume: lvm_partition-0
+        preserve: false
+        type: format
+        id: format-2
+      - device: format-2
+        path: /
+        type: mount
+        id: mount-2
   
   user-data:
     timezone: Europe/Zurich
