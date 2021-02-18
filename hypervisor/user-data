@@ -30,7 +30,7 @@ autoinstall:
         dhcp4: true
   storage:
     config:
-    # drive Hardware
+      # drive Hardware
       - ptable: gpt
         # serial: SanDisk_SD9SN8W2T001122_20233B800056
         # wwn: '0x5001b448b5723436'
@@ -163,10 +163,9 @@ autoinstall:
       - netplan apply
       # activate phys hardware
       - ovs-vsctl add-port ovs0 eno1
-      # once everything is doe 
-      - touch /etc/cloud/cloud-init.disabled
       # Init lxd
       - "cat /etc/lxd/preseed.yaml | lxd init --preseed"
-      # don't wait endlessly for user input.
-      - [sed, -i, -e, "s/GRUB_TIMEOUT=0/GRUB_TIMEOUT=10/", /etc/default/grub]
-      - update-grub
+      # once everything is done, we deactivate cloud-init
+      # If we trigger ansible via Webhook, then we let Ansible create this file. 
+      - touch /etc/cloud/cloud-init.disabled
+  
