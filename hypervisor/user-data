@@ -166,7 +166,7 @@ autoinstall:
       # once everything is doe 
       - touch /etc/cloud/cloud-init.disabled
       # Init lxd
-      - lxd init --preseed /etc/lxd/preseed.yaml
+      - "cat /etc/lxd/preseed.yaml | lxd init --preseed"
       # don't wait endlessly for user input.
       - [sed, -i, -e, "s/GRUB_TIMEOUT=0/GRUB_TIMEOUT=10/", /etc/default/grub]
-      - update-grub2
+      - update-grub
