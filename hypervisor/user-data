@@ -128,12 +128,45 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-    # This should run after all package updates
+    write_files: 
+      - path: /etc/lxd/preseed.yaml
+        content: |
+          config: {}
+          cluster: null
+          networks: []
+          storage_pools:
+          - config: 
+              source: /var/snap/lxd/common/lxd/storage-pools/default
+            description: ""
+            name: default
+            driver: btrfs
+          profiles:
+          - name: default
+            config: {}
+            description: ""
+            devices:
+              eth0:
+                nictype: bridged
+                name: eth0
+                parent: ovs0
+                type: nic
+              root:
+                path: /
+                pool: default
+                type: disk
+    # the following commands run after all package updates and installs
     runcmd:
       - ovs-vsctl add-br ovs0
       - ovs-vsctl add-port ovs0 mgnt0 -- set interface mgnt0 type=internal
+      # fix netplan
       - [sed, -i, -e, "s/dhcp4: true/dhcp4: no/" , -e, "/^  version: 2/i \\ \\ \\ \\ mgnt0:\\n\\ \\ \\ \\ \\ \\ dhcp4: true", /etc/netplan/00-installer-config.yaml]
       - netplan apply
+      # activate phys hardware
       - ovs-vsctl add-port ovs0 eno1
+      # once everything is doe 
       - touch /etc/cloud/cloud-init.disabled
-  
+      # Init lxd
+      - lxd init --preseed /etc/lxd/preseed.yaml
+      # don't wait endlessly for user input.
+      - [sed, -i, -e, "s/GRUB_TIMEOUT=0/GRUB_TIMEOUT=10/", /etc/default/grub]
+      - update-grub2
