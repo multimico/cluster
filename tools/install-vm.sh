@@ -6,11 +6,15 @@
 # The Username and Github Name are optional 
 #
 
+# TODO: We want to customise the image
 UBUNTUVERSION="20.10"
 HOSTNAME=`petname`
 
 USERNAME=$1
 GITHUBNAME=$2
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+TDIR=`dirname $DIR`
 
 echo "The new host is called $HOSTNAME"
 
@@ -45,8 +49,11 @@ CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 echo "init $HOSTNAME"
 lxc init ubuntu:$UBUNTUVERSION $HOSTNAME
 
+# TODO We my want to customise the cloud_init file.
+CLOUD_INIT=$TDIR/vms/cloud_init.cfg
+
 echo "inject cloud init user-data"
-cat ~/vms/cloud_init.cfg | \
+cat $CLOUD_INIT | \
     sed -e "s/HOSTNAME/$HOSTNAME/" \
         -e "s/USERNAME/$USERNAME/" \
         -e "s/PASSWORD/$CRYPTPASSWD/" \
