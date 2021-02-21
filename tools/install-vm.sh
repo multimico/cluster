@@ -32,7 +32,7 @@ fi
 if [ "x$GITHUBNAME" == "x" ] 
 then
     TMPGITHUBNAME=`whoami`
-    read -p "System User Name [default $TMPGITHUBNAME]:" GITHUBNAME
+    read -p "GitHub User Name [default $TMPGITHUBNAME]:" GITHUBNAME
 
     if [ "x$GITHUBNAME" == "x" ] 
     then

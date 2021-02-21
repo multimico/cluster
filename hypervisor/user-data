@@ -168,4 +168,5 @@ autoinstall:
       # once everything is done, we deactivate cloud-init
       # If we trigger ansible via Webhook, then we let Ansible create this file. 
       - touch /etc/cloud/cloud-init.disabled
+      
   
