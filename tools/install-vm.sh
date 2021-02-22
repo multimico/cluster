@@ -6,17 +6,24 @@
 # The Username and Github Name are optional 
 #
 
-# TODO: We want to customise the image
-UBUNTUVERSION="20.10"
-HOSTNAME=`petname`
-
-USERNAME=$1
-GITHUBNAME=$2
-
+# CONSTANTS NOT TO CUSTOMISE
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 TDIR=`dirname $DIR`
 
-echo "The new host is called $HOSTNAME"
+HOSTNAME=`petname`
+
+# Variables
+# TODO: We want to customise the image
+UBUNTUVERSION="20.10"
+# TODO: We my want to customise the cloud_init file.
+CLOUD_INIT=$TDIR/vms/cloud_init.cfg
+# TODO: Add Customizable CPU and Memory Limits
+
+# Parameters
+USERNAME=$1
+GITHUBNAME=$2
+
+echo "The new host is called '$HOSTNAME'"
 
 if [ "x$USERNAME" == "x" ]
 then
@@ -49,16 +56,13 @@ CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 echo "init $HOSTNAME"
 lxc init ubuntu:$UBUNTUVERSION $HOSTNAME
 
-# TODO We my want to customise the cloud_init file.
-CLOUD_INIT=$TDIR/vms/cloud_init.cfg
 
 echo "inject cloud init user-data"
+export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME
+
 cat $CLOUD_INIT | \
-    sed -e "s/HOSTNAME/$HOSTNAME/" \
-        -e "s/USERNAME/$USERNAME/" \
-        -e "s/PASSWORD/$CRYPTPASSWD/" \
-        -e "s/GH_ID/$GITHUBNAME/" | \
+    envsubst | \
     lxc config set $HOSTNAME user.user-data -
 
-echo "Starting System $HOSTNAME"
+# echo "Starting System $HOSTNAME"
 lxc start $HOSTNAME
