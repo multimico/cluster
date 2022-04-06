@@ -30,5 +30,5 @@ MACTEMPLATE="$MAC_PREFIX-%02X-%02X-%02X\n"
 
 for X in `seq 1 $N_ADDRESSES`
 do
-    printf "  - macaddress: $MACTEMPLATE $[RANDOM%256] $[RANDOM%256] $[RANDOM%256]"
+    printf "  - macaddress: $MACTEMPLATE" $[RANDOM%256] $[RANDOM%256] $[RANDOM%256]
 done
