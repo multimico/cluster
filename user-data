@@ -17,7 +17,7 @@ autoinstall:
     # Repos for extra packages must go into sources. 
     sources: 
       # Include repos for extra packages
-      rmescandon-ya: 
+      rmescandon/ya: 
         source: ppa:rmescandon/yq
         keyid: CC86BB64
         keyserver: keyserver.ubuntu.com
