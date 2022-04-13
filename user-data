@@ -13,6 +13,12 @@ autoinstall:
        uri: http://archive.ubuntu.com/ubuntu
      - arches: [default]
        uri: http://ports.ubuntu.com/ubuntu-ports
+    sources: 
+    # Include repos for extra packages
+      rmescandon-ya: 
+        source: ppa:rmescandon/yq
+        keyid: CC86BB64
+        keyserver: keyserver.ubuntu.com
   ssh:
     install-server: true
     allow-pw: false
@@ -128,12 +134,10 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-    snap:
-      commands:
-        - [install, yp]
+      - yp
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
-        content: 
+        content: ""
     # the following commands run after all package updates and installs
     runcmd:
       # TODO git clone config REPO
