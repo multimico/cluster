@@ -1,0 +1,10 @@
+runcmd:
+- git clone \
+  --depth 1  \
+  --filter=blob:none  \
+  --sparse \
+  https://raw.githubusercontent.com/dxiai/multimico-cluster/ci/init.sh \
+;
+- cd ci
+- git sparse-checkout set init.sh
+- sh init.sh
