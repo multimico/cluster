@@ -1,0 +1,138 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  refresh-installer:
+    update: no
+
+  apt:
+    geoip: true
+    preserve_sources_list: false
+    primary:
+     - arches: [amd64, i386]
+       uri: http://archive.ubuntu.com/ubuntu
+     - arches: [default]
+       uri: http://ports.ubuntu.com/ubuntu-ports
+  ssh:
+    install-server: true
+    allow-pw: false
+  keyboard: 
+    layout: us
+    toggle: null
+    variant: ''
+  locale: C
+  network:
+    version: 2
+    ethernets:
+      maineth:
+        match:
+          name: "en*"
+        dhcp4: true
+  storage:
+    config:
+      # drive Hardware
+      - ptable: gpt
+        # serial: SanDisk_SD9SN8W2T001122_20233B800056
+        # wwn: '0x5001b448b5723436'
+        path: /dev/sda
+        wipe: superblock
+        preserve: false
+        name: ''
+        grub_device: false
+        type: disk
+        id: disk-sda
+        match:
+          # ssd: yes
+          size: largest
+      # efi (bios partition) ~512MB
+      - device: disk-sda
+        size: 536870912
+        wipe: superblock
+        flag: boot
+        number: 1
+        preserve: false
+        grub_device: true
+        type: partition
+        id: partition-0
+      - fstype: fat32
+        volume: partition-0
+        preserve: false
+        type: format
+        id: format-0
+      - device: format-0
+        path: /boot/efi
+        type: mount
+        id: mount-0
+      # 1GB Boot Partition
+      - device: disk-sda
+        size: 1073741824
+        wipe: superblock
+        flag: ''
+        number: 2
+        preserve: false
+        grub_device: false
+        type: partition
+        id: partition-1
+      - fstype: btrfs
+        volume: partition-1
+        preserve: false
+        type: format
+        id: format-1
+      - device: format-1
+        path: /boot
+        type: mount
+        id: mount-1
+      # ~ 1.8TB System Data
+      - device: disk-sda
+        # size: 2046795186176
+        # use all the remaining space (in case we have different drive sizes)
+        size: -1
+        wipe: superblock
+        flag: ''
+        number: 3
+        preserve: false
+        grub_device: false
+        type: partition
+        id: partition-2
+      - fstype: btrfs
+        volume: partition-2
+        preserve: false
+        type: format
+        id: format-2
+      - device: format-2
+        path: /
+        type: mount
+        id: mount-2
+  
+  user-data:
+    timezone: Europe/Zurich
+    hostname: multimico
+    users: 
+      - name: dxiai
+        passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
+        shell: /bin/bash
+        ssh_import_id: 
+          - gh:phish108
+          - gh:bajkad
+        groups:
+          - sudo
+          - lxd
+          - adm
+          - plugdev
+          - cdrom
+        lock_passwd: false
+    package_update: true
+    package_upgrade: true
+    package_reboot_if_required: true
+    packages:
+      - petname
+      - openvswitch-switch-dpdk
+      - libosinfo-bin
+      - yq
+    # the following commands run after all package updates and installs
+    runcmd:
+      # TODO git clone config REPO
+      # 
+      - touch /etc/cloud/cloud-init.disabled
+      
+  
