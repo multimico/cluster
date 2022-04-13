@@ -15,9 +15,10 @@ autoinstall:
        uri: http://ports.ubuntu.com/ubuntu-ports
 
     # Repos for extra packages must go into sources. 
-    #sources: 
+    sources: 
     #  # Include repos for extra packages
-    #  rmescandon/ya: 
+    #  #  THIS CAUSES A CRASH
+    #  rmescandonyq: 
     #    source: ppa:rmescandon/yq
     #    keyid: CC86BB64
     #    keyserver: keyserver.ubuntu.com
@@ -131,7 +132,8 @@ autoinstall:
         lock_passwd: false
     package_update: true
     package_upgrade: true
-    package_reboot_if_required: true
+    # we reboot after installation!
+    package_reboot_if_required: false 
     packages:
       - petname
       - openvswitch-switch-dpdk
