@@ -15,13 +15,13 @@ autoinstall:
        uri: http://ports.ubuntu.com/ubuntu-ports
 
     # Repos for extra packages must go into sources. 
-    #sources: 
+    sources: 
     #  # Include repos for extra packages
     #  #  THIS CAUSES A CRASH
     #  rmescandonyq: 
-    #    source: ppa:rmescandon/yq
-    #    keyid: CC86BB64
-    #    keyserver: keyserver.ubuntu.com
+      - source: ppa:rmescandon/yq
+        keyid: CC86BB64
+        keyserver: keyserver.ubuntu.com
   ssh:
     install-server: true
     allow-pw: false
