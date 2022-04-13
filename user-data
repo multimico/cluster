@@ -140,8 +140,7 @@ autoinstall:
       - yp
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
-        content: |
-          
+        content: " "
     # the following commands run after all package updates and installs
     # runcmd:
       # TODO git clone config REPO
