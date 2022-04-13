@@ -13,8 +13,10 @@ autoinstall:
        uri: http://archive.ubuntu.com/ubuntu
      - arches: [default]
        uri: http://ports.ubuntu.com/ubuntu-ports
+
+    # Repos for extra packages must go into sources. 
     sources: 
-    # Include repos for extra packages
+      # Include repos for extra packages
       rmescandon-ya: 
         source: ppa:rmescandon/yq
         keyid: CC86BB64
@@ -129,6 +131,7 @@ autoinstall:
         lock_passwd: false
     package_update: true
     package_upgrade: true
+    # TEST This might be a problem
     package_reboot_if_required: true
     packages:
       - petname
@@ -137,11 +140,12 @@ autoinstall:
       - yp
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
-        content: ""
+        content: |
+          
     # the following commands run after all package updates and installs
-    runcmd:
+    # runcmd:
       # TODO git clone config REPO
-      - mkdir -p /run/multimico/
+      # - mkdir -p /run/multimico/
       # - git clone https://github.zhaw.ch/multimico/cluster-config.git
       
   
