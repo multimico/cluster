@@ -143,8 +143,8 @@ autoinstall:
         content: " "
     # the following commands run after all package updates and installs
     # runcmd:
-      # TODO git clone config REPO
-      # - mkdir -p /run/multimico/
-      # - git clone https://github.zhaw.ch/multimico/cluster-config.git
+    # TODO git clone config REPO
+    #  - mkdir -p /run/multimico/
+    #  - git clone https://github.zhaw.ch/multimico/cluster-config.git
       
   
