@@ -15,12 +15,6 @@ autoinstall:
        uri: http://ports.ubuntu.com/ubuntu-ports
     # Repos for extra packages must go into sources. 
     #sources: 
-    #  # Include repos for extra packages
-    #  #  THIS CAUSES A CRASH
-    #  rmescandonyq: 
-    #    source: ppa:rmescandon/yq
-    #    keyid: CC86BB64
-    #    keyserver: keyserver.ubuntu.com
   ssh:
     install-server: true
     allow-pw: false
@@ -137,12 +131,14 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-      # - yp
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
         content: " "
     # the following commands run after all package updates and installs
-    # runcmd:
+    runcmd:
+      # Download and install yq
+      - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+      - chmod a+x /usr/local/bin/yq
     # TODO git clone config REPO
     #  - mkdir -p /run/multimico/
     #  - git clone https://github.zhaw.ch/multimico/cluster-config.git
