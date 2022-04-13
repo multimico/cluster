@@ -136,7 +136,7 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-      - yp
+      #- yp
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
         content: " "
