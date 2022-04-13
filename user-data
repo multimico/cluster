@@ -128,11 +128,14 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
-      - yq
+    snap:
+      commands:
+        - [install, yp]
     # the following commands run after all package updates and installs
     runcmd:
       # TODO git clone config REPO
-      # 
+      - mkdir -p /run/multimico/
+      # - git clone https://github.zhaw.ch/multimico/cluster-config.git
       - touch /etc/cloud/cloud-init.disabled
       
   
