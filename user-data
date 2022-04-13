@@ -131,7 +131,6 @@ autoinstall:
         lock_passwd: false
     package_update: true
     package_upgrade: true
-    # TEST This might be a problem
     package_reboot_if_required: true
     packages:
       - petname
