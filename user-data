@@ -15,12 +15,12 @@ autoinstall:
        uri: http://ports.ubuntu.com/ubuntu-ports
 
     # Repos for extra packages must go into sources. 
-    sources: 
-      # Include repos for extra packages
-      rmescandon/ya: 
-        source: ppa:rmescandon/yq
-        keyid: CC86BB64
-        keyserver: keyserver.ubuntu.com
+    #sources: 
+    #  # Include repos for extra packages
+    #  rmescandon/ya: 
+    #    source: ppa:rmescandon/yq
+    #    keyid: CC86BB64
+    #    keyserver: keyserver.ubuntu.com
   ssh:
     install-server: true
     allow-pw: false
