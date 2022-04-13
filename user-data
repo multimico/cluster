@@ -125,8 +125,7 @@ autoinstall:
         lock_passwd: false
     package_update: true
     package_upgrade: true
-    # we reboot after installation!
-    package_reboot_if_required: false
+    package_reboot_if_required: true
     packages:
       - petname
       - openvswitch-switch-dpdk
