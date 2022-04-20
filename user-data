@@ -139,8 +139,8 @@ autoinstall:
       - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
       - chmod a+x /usr/local/bin/yq
       # bootstrap the machine specific installation
-      - mkdir -p /run/multimico/init
-      - git clone https://github.com/multimico/cluster-config.git /run/multimico/init
-      - /run/multimico/init/bin/init.sh  
+      - mkdir -p /run/multimico/init /run/multimico/bootstrap
+      - git clone https://github.com/multimico/init.git /run/multimico/init
+      - sh /run/multimico/init/bin/init.sh  
       
   
