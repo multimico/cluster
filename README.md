@@ -10,11 +10,11 @@ Unser kleines Lab besteht aus 2x Intel NUC 10i7, 64GB Ram, 2TB NVME HD. Für Hoc
 
 Der Installationsprozess ist auf eine interaktionsfreie Installation ausgelegt. 
 
-Die Installation erfolgt über ein angepasstes Installationsmedium ([`ubuntu-$RELEASE-live-server-ZHAW.iso`](https://github.com/multimico/ubuntu)), mit $RELEASE entsprechend dem offiziellen Ubuntu Release. Das Installationsmedium ist eine reine "headless" Installation und erfordert *keine* Nutzerinteraktion. 
+Die Installation erfolgt über ein angepasstes Installationsmedium ([`ubuntu-$RELEASE-live-server-ZHAW.iso`](https://github.com/multimico/imager)), mit $RELEASE entsprechend dem offiziellen Ubuntu Release. Das Installationsmedium ist eine reine "headless" Installation und erfordert *keine* Nutzerinteraktion. 
 
 Die Basiskonfiguration wird in `user-data` initialisiert. Die eigentliche Systemkonfiguration erfolgt in zwei Schritten. 
 
-1. Aus dem Repository [multimico/init] werden die registrierten MAC Adressen und Konfigurationsquellen geladen. Auf Basis dieser Konfiguration wird ein zweites Konfigurationsrepository gelanden. 
+1. Aus dem Repository [multimico/init](https://github.com/multimico/init) werden die registrierten MAC Adressen und Konfigurationsquellen geladen. Auf Basis dieser Konfiguration wird ein zweites Konfigurationsrepository gelanden. 
 2. Das zweite Konfigurationsrepository enthält alle relevanten Informationen, um die Installation bis zu dem Punkt abzuschliessen, dass der Rechner über das Netzwerk erreichbar ist.
 
 Alle Konfigurationsrepositories haben als definierten Einstiegspunkt `bin/init.sh`. Dieses Shellskript führt alle notwendigen Schritte für die jeweilige Konfiguration aus. Alle allgemeinen Tools werden dabei über das init Repository den nachgereihten Initialisierungsschritten bereitgestellt.
