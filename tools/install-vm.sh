@@ -37,17 +37,16 @@ fi
 
 echo "The new host is called '$HOSTNAME'"
 
-if [ "x$USERNAME" == "x" ]
+if [ -z $USERNAME ]
 then
     TMPUSERNAME=`whoami`
     read -p "System User Name [default $TMPUSERNAME]:" USERNAME
 
-    if [ "x$USERNAME" == "x" ]
+    if [ -z $USERNAME ]
     then
         USERNAME=$TMPUSERNAME
     fi
 fi
-
 
 # Ask for a default password
 read -s -p "Enter password:" PASSWD
