@@ -56,7 +56,7 @@ read -s -p "Enter password:" PASSWD
 CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 
 echo "init $HOSTNAME"
-lxc init -p $PROFILE ubuntu:$UBUNTUVERSION $HOSTNAME
+# lxc init -p $PROFILE ubuntu:$UBUNTUVERSION $HOSTNAME
 
 
 echo "inject cloud init user-data"
@@ -66,7 +66,9 @@ cat $CLOUD_INIT | \
     envsubst | \
     lxc config set $HOSTNAME user.user-data -
 
-lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
+echo $PROFILE $MACADDRESS
+
+# lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 # echo "Starting System $HOSTNAME"
 # lxc start $HOSTNAME
