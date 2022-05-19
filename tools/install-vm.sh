@@ -68,4 +68,4 @@ echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
 lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 # echo "Starting System $HOSTNAME"
-# lxc start $HOSTNAME
+lxc start $HOSTNAME
