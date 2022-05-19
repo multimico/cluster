@@ -25,8 +25,8 @@ USERNAME=$2
 
 GITHUBNAME=$3
 
-MACADDRESS=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
-PROFILE=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
+MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
+PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
 
 MACADDRESS=$(echo $MACADDRESS | sed -E s/-/:/g | sed 's/.*/\L&/' )
 
