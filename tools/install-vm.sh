@@ -14,7 +14,7 @@ HOSTNAME=`petname`
 
 # Variables
 # TODO: We want to customise the image
-UBUNTUVERSION="20.10"
+UBUNTUVERSION="22.04"
 # TODO: We my want to customise the cloud_init file.
 CLOUD_INIT=$TDIR/vms/cloud_init.cfg
 # TODO: Add Customizable CPU and Memory Limits
@@ -63,6 +63,8 @@ export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME
 cat $CLOUD_INIT | \
     envsubst | \
     lxc config set $HOSTNAME user.user-data -
+
+lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 # echo "Starting System $HOSTNAME"
 lxc start $HOSTNAME
