@@ -9,6 +9,7 @@
 # CONSTANTS NOT TO CUSTOMISE
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 TDIR=`dirname $DIR`
+CDIR=/home/multimico/src/cluster-config/
 
 HOSTNAME=`petname`
 
@@ -17,11 +18,20 @@ HOSTNAME=`petname`
 UBUNTUVERSION="22.04"
 # TODO: We my want to customise the cloud_init file.
 CLOUD_INIT=$TDIR/vms/cloud_init.cfg
-# TODO: Add Customizable CPU and Memory Limits
 
 # Parameters
-USERNAME=$1
-GITHUBNAME=$2
+HOSTNAME=$1
+USERNAME=$2
+
+GITHUBNAME=$3
+
+MACADDRESS=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
+PROFILE=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
+
+if [ -z $PROFILE ]
+then
+    PROFILE=default
+fi
 
 echo "The new host is called '$HOSTNAME'"
 
@@ -36,17 +46,6 @@ then
     fi
 fi
 
-if [ "x$GITHUBNAME" == "x" ] 
-then
-    TMPGITHUBNAME=`whoami`
-    read -p "GitHub User Name [default $TMPGITHUBNAME]:" GITHUBNAME
-
-    if [ "x$GITHUBNAME" == "x" ] 
-    then
-        GITHUBNAME=$TMPGITHUBNAME
-    fi
-fi
-
 # Ask for a default password
 read -s -p "Enter password:" PASSWD
 
@@ -54,7 +53,7 @@ read -s -p "Enter password:" PASSWD
 CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 
 echo "init $HOSTNAME"
-lxc init ubuntu:$UBUNTUVERSION $HOSTNAME
+lxc init -p $PROFILE ubuntu:$UBUNTUVERSION $HOSTNAME
 
 
 echo "inject cloud init user-data"
