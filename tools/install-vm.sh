@@ -66,7 +66,7 @@ CIDATA=$(cat $CLOUD_INIT | envsubst )
 # echo $CIDATA | lxc config set $HOSTNAME user.user-data -
 
 echo $PROFILE $MACADDRESS
-echo -e $CIDATA
+echo "${CIDATA}"
 
 # lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
