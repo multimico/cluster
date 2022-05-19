@@ -62,11 +62,12 @@ echo "init $HOSTNAME"
 echo "inject cloud init user-data"
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME
 
-cat $CLOUD_INIT | \
-    envsubst | \
-    lxc config set $HOSTNAME user.user-data -
+CIDATA=$(cat $CLOUD_INIT | envsubst )
+
+# echo $CIDATA | lxc config set $HOSTNAME user.user-data -
 
 echo $PROFILE $MACADDRESS
+echo $CIDATA
 
 # lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
