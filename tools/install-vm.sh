@@ -28,6 +28,8 @@ GITHUBNAME=$3
 MACADDRESS=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
 PROFILE=$( yq ".nodes[] | select(name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
 
+MACADDRESS=$(echo $MACADDRESS | sed -E s/-/:/g | sed 's/.*/\L&/' )
+
 if [ -z $PROFILE ]
 then
     PROFILE=default
@@ -45,6 +47,7 @@ then
         USERNAME=$TMPUSERNAME
     fi
 fi
+
 
 # Ask for a default password
 read -s -p "Enter password:" PASSWD
@@ -66,4 +69,4 @@ cat $CLOUD_INIT | \
 lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 # echo "Starting System $HOSTNAME"
-lxc start $HOSTNAME
+# lxc start $HOSTNAME
