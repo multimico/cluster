@@ -9,7 +9,7 @@
 # CONSTANTS NOT TO CUSTOMISE
 # DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 TDIR=/home/multimico/src/multimico-cluster
-CDIR=/home/multimico/src/cluster-config/
+CDIR=/home/multimico/src/cluster-config
 
 HOSTNAME=`petname`
 
