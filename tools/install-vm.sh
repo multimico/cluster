@@ -21,7 +21,7 @@ OSVERSION="22.04"
 # get the code name for the docker repos
 OSVERSIONNAME=$(osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/")
 # TODO: We my want to customise the cloud_init file.
-CLOUD_INIT=$TDIR/vms/cloud_init.cfg
+CLOUD_INIT=${CDIR}/profiles/cloud_init.cfg
 
 # Parameters
 HOSTNAME=$1
