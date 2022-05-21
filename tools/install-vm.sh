@@ -11,11 +11,14 @@
 TDIR=/home/multimico/src/multimico-cluster
 CDIR=/home/multimico/src/cluster-config
 
-HOSTNAME=`petname`
+# HOSTNAME=`petname`
 
 # Variables
 # TODO: We want to customise the image
-UBUNTUVERSION="22.04"
+OSNAME=ubuntu
+OSVERSION="22.04"
+
+OSVERSIONNAME=$(osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/")
 # TODO: We my want to customise the cloud_init file.
 CLOUD_INIT=$TDIR/vms/cloud_init.cfg
 
@@ -59,11 +62,11 @@ echo "init $HOSTNAME"
 
 
 echo "inject cloud init user-data"
-export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$UBUNTUVERSION
+export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
 CIDATA=$(cat $CLOUD_INIT | envsubst )
 
-lxc init -p $PROFILE ubuntu:$UBUNTUVERSION $HOSTNAME
+lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
 echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
 lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
