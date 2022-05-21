@@ -18,14 +18,16 @@ CDIR=/home/multimico/src/cluster-config
 OSNAME=ubuntu
 OSVERSION="22.04"
 
+# get the code name for the docker repos
 OSVERSIONNAME=$(osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/")
 # TODO: We my want to customise the cloud_init file.
 CLOUD_INIT=$TDIR/vms/cloud_init.cfg
 
 # Parameters
 HOSTNAME=$1
-USERNAME=$2
 
+# TODO: The username and the GH names should be configurable
+USERNAME=$2
 GITHUBNAME=$3
 
 MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
@@ -43,30 +45,36 @@ then
     CLOUD_INIT=${CLOUD_INIT}_${PROFILE}
 fi
 
-echo "The new host is called '$HOSTNAME'"
+# echo "The new host is called '$HOSTNAME'"
 
+# If no username is given as parameter, ask for a username
 if [ -z $USERNAME ]
 then
     TMPUSERNAME=`whoami`
-    read -p "System User Name [default $TMPUSERNAME]:" USERNAME
+    read -p "System User Name [default $TMPUSERNAME]: " USERNAME
 
     if [ -z $USERNAME ]
     then
         USERNAME=$TMPUSERNAME
     fi
+
+    read -p "Provide GitHub User for SSH Keys [default $TMPUSERNAME]: " GITHUBNAME
+
+    if [ -z $GITHUBNAME ]
+    then
+        GITHUBNAME=$TMPUSERNAME
+    fi
 fi
 
-# Ask for a default password
-read -s -p "Enter password:" PASSWD
+# Always ask for a default password
+read -s -p "Enter password: " PASSWD
 
 # Hash the password for cloud init
 CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 
-echo "init $HOSTNAME"
-# 
+# echo "init $HOSTNAME"
 
-
-echo "inject cloud init user-data"
+# echo "inject cloud init user-data"
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
 CIDATA=$(cat $CLOUD_INIT | envsubst )
