@@ -38,6 +38,11 @@ then
     PROFILE=default
 fi
 
+if [ $PROFILE != "default" ]
+then
+    CLOUD_INIT=${CLOUD_INIT}_${PROFILE}
+fi
+
 echo "The new host is called '$HOSTNAME'"
 
 if [ -z $USERNAME ]
