@@ -21,5 +21,20 @@ Alle Konfigurationsrepositories haben als definierten Einstiegspunkt `bin/init.s
 
 Dadurch wird die zentrale Installation kompakt und allgemein gehalten. Alle weiteren Anpassungen werden über Ansible vorgenommen sobald der Rechner über das Netzwerk erreichbar ist. 
 
+# Vorbereitungen
 
+Damit wir möglichst wenig manuell konfigurieren müssen, sollten die folgenden Repositories auf jeden Hardware-Knoten gecloned werden: 
 
+- `mutlimico/cluster`
+- `multimico/lxd-host`
+- `multimico/config` (private information)
+
+# VMs starten
+
+Eine vorkonfigurierte VM kann mit dem folgenden Befehl gestartet werden: 
+
+```
+bash tools/install-vm.sh $VMNAME
+```
+
+Falls die Konfiguration keine entsprechenden Informationen bietet, fragt das Tool nach default user, github user und passwort. Entsprechend der vorkonfigurierten Profildefinition werden notwendige Packete installiert und Einstellungen der VM vorgenommen. 
