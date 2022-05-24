@@ -44,7 +44,7 @@ fi
 
 IS_RUNNING=$(lxc list --format=yaml | yq ".[] | select(.name == \"${HOSTNAME}\").state.status")
 
-if [ $IS_RUNNING == "Running" ]
+if [ "$IS_RUNNING" == "Running" ]
 then
     echo "Node is already running. Avoid restarting it!"
     exit 0
@@ -85,6 +85,8 @@ fi
 
 # Always ask for a default password
 read -s -p "Enter password: " PASSWD
+# extra newline
+echo
 
 # Hash the password for cloud init
 CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
