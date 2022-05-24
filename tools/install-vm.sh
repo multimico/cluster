@@ -94,7 +94,7 @@ CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 # echo "inject cloud init user-data"
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
-CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
+CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
 
 lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
 echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
