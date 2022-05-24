@@ -11,6 +11,8 @@
 TDIR=/home/multimico/src/multimico-cluster
 CDIR=/home/multimico/src/cluster-config
 
+HYPERVISOR=$( hostname )
+
 # HOSTNAME=`petname`
 
 # Variables
@@ -32,6 +34,21 @@ GITHUBNAME=$3
 
 MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
 PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
+INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
+
+if [ $HYPERVISOR != $INTENT_HOST ]
+then
+    echo "Node is not intendend for this host"
+    exit 0
+fi
+
+IS_RUNNING=$(lxc list --format=yaml | yq ".[] | select(.name == \"${HOSTNAME}\").state.status")
+
+if [ $IS_RUNNING == "Running" ]
+then
+    echo "Node is already running. Avoid restarting it!"
+    exit 0
+fi
 
 MACADDRESS=$(echo $MACADDRESS | sed -E s/-/:/g | sed 's/.*/\L&/' )
 
@@ -77,7 +94,7 @@ CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 # echo "inject cloud init user-data"
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
-CIDATA=$(cat $CLOUD_INIT | envsubst )
+CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\\"nodes/hardware_macs.yaml\\").nodes[] | select(.name == \\"${HOSTNAME}\\" ).ssh-ids)" )
 
 lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
 echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
