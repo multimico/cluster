@@ -89,7 +89,7 @@ then
 fi
 
 # Hash the password for cloud init
-CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
+CRYPTPASSWD=$( echo -n $PASSWD | openssl passwd -6 -stdin )
 
 # get the code name for the docker repos
 OSVERSIONNAME=$( osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/" )
