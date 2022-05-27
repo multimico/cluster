@@ -7,16 +7,29 @@
 
 # HOSTNAME=`petname`
 
-# Variables
+# Constants
 OSNAME=ubuntu
 OSVERSION="22.04"
 PROFILE=docker
 
-
+# Parameters
 CLOUD_INIT=$1
-# Optional parameters
+
+# Optional Parameters
 MACADDRESS=$2
 HOSTNAME=$3
+
+if [ -z $CLOUD_INIT ]
+then
+    echo "No cloud init file provided. Don't know what to do."
+    exit 1
+fi
+
+if [ ! -f $CLOUD_INIT ]
+then
+    echo "Cloud Init File does not exist. "
+    exit 1
+fi
 
 if [ -z $HOSTNAME ]
 then
@@ -69,18 +82,23 @@ read -s -p "Enter password: " PASSWD
 # extra newline
 echo
 
+if [ -z $PASSWD ]
+then   
+    echo "Empty passwords are forbidden"
+    exit 1
+fi
+
 # Hash the password for cloud init
 CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
 
-# echo "init $HOSTNAME"
+# get the code name for the docker repos
+OSVERSIONNAME=$( osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/" )
 
-export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME
-
-CIDATA=$(cat $CLOUD_INIT | envsubst )
+export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
 lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
 
-echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
+echo "$(cat $CLOUD_INIT | envsubst )" | lxc config set $HOSTNAME user.user-data -
 
 lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
