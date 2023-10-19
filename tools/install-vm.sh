@@ -89,7 +89,9 @@ read -s -p "Enter password: " PASSWD
 echo
 
 # Hash the password for cloud init
-CRYPTPASSWD=`echo -n $PASSWD | openssl passwd -6 -stdin`
+PWSALT=`echo $RANDOM | md5sum | head -c 10`
+
+CRYPTPASSWD=`echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s`
 
 # echo "init $HOSTNAME"
 
