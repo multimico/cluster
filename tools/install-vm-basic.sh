@@ -30,11 +30,11 @@ HOSTNAME=$1
 
 # TODO: The username and the GH names should be configurable
 # USERNAME=$2
-GITHUBNAME=$2
+# GITHUBNAME=$2
 
 # MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
 # PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
-PROFILE=$3
+PROFILE=$2
 # INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
 
 if [ $HYPERVISOR != $INTENT_HOST ]
