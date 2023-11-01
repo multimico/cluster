@@ -34,6 +34,7 @@ GITHUBNAME=$3
 
 # MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
 # PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
+PROFILE=$4
 # INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
 
 if [ $HYPERVISOR != $INTENT_HOST ]
