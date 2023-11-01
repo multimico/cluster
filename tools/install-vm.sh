@@ -88,6 +88,7 @@ read -s -p "Enter password: " PASSWD
 # extra newline
 echo
 
+
 # Hash the password for cloud init
 PWSALT=`echo $RANDOM | md5sum | head -c 10`
 
