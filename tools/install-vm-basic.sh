@@ -32,9 +32,9 @@ HOSTNAME=$1
 USERNAME=$2
 GITHUBNAME=$3
 
-MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
-PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
-INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
+# MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
+# PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
+# INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
 
 if [ $HYPERVISOR != $INTENT_HOST ]
 then
@@ -115,7 +115,7 @@ CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDI
 
 lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
 echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
-lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
+# lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 if [ ! -z $CPULIMIT ] 
 then
