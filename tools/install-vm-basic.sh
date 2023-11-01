@@ -29,12 +29,12 @@ CLOUD_INIT=${CDIR}/profiles/cloud_init.cfg
 HOSTNAME=$1
 
 # TODO: The username and the GH names should be configurable
-USERNAME=$2
-GITHUBNAME=$3
+# USERNAME=$2
+GITHUBNAME=$2
 
 # MACADDRESS=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").macaddress" "${CDIR}/nodes/hardware_macs.yaml" )
 # PROFILE=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").profile" "${CDIR}/nodes/hardware_macs.yaml" )
-PROFILE=$4
+PROFILE=$3
 # INTENT_HOST=$( yq ".nodes[] | select(.name == \"${HOSTNAME}\").host" "${CDIR}/nodes/hardware_macs.yaml" )
 
 if [ $HYPERVISOR != $INTENT_HOST ]
