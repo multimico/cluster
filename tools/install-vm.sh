@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # USAGE
-#   > install-system.sh MY_USER_NAME MY_GH_NAME
+#   > install-vm.sh HOSTNAME MY_USER_NAME MY_GH_NAME
 # 
 # The Username and Github Name are optional 
 #
@@ -18,7 +18,7 @@ HYPERVISOR=$( hostname )
 # Variables
 # TODO: We want to customise the image
 OSNAME=ubuntu
-OSVERSION="22.04"
+OSVERSION="24.04"
 
 # get the code name for the docker repos
 OSVERSIONNAME=$(osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/")
