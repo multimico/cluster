@@ -47,8 +47,9 @@ autoinstall:
           # ssd: yes
           size: largest
       # efi (bios partition) ~512MB
+      # Ubuntu uses now 1GB
       - device: disk-sda
-        size: 536870912
+        size: 1073741824
         wipe: superblock
         flag: boot
         number: 1
@@ -65,9 +66,9 @@ autoinstall:
         path: /boot/efi
         type: mount
         id: mount-0
-      # 1GB Boot Partition
+      # 2GB Boot Partition
       - device: disk-sda
-        size: 1073741824
+        size: 2147483648
         wipe: superblock
         flag: ''
         number: 2
@@ -75,7 +76,7 @@ autoinstall:
         grub_device: false
         type: partition
         id: partition-1
-      - fstype: btrfs
+      - fstype: ext4
         volume: partition-1
         preserve: false
         type: format
@@ -96,7 +97,7 @@ autoinstall:
         grub_device: false
         type: partition
         id: partition-2
-      - fstype: btrfs
+      - fstype: ext4
         volume: partition-2
         preserve: false
         type: format
