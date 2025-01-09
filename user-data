@@ -3,7 +3,7 @@ autoinstall:
   version: 1
 
   refresh-installer:
-    update: no
+    update: yes
 
   apt:
     geoip: true
