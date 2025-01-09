@@ -181,7 +181,9 @@ autoinstall:
         Signed-By: /etc/apt/keyrings/zabbly.asc
         EOF'
       - apt update
-      - apt install -y incus-basic incus-extra
+      - apt install -y incus-base incus-extra
+      # add the incus-admin user
+      - adduser multimico incus-admin
 
       # finally disable cloud-init
       # This MUST NOT be created via write_files as this would create the file before 
