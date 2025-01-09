@@ -113,7 +113,6 @@ autoinstall:
         shell: /bin/bash
         ssh_import_id: 
           - gh:phish108
-          - gh:bajkad
         groups:
           - sudo
           - lxd
