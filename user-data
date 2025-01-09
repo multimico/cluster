@@ -135,20 +135,30 @@ autoinstall:
 
   user-data:
     timezone: Europe/Zurich
-    hostname: multimico
+    # hostname: multimico
+
+    # the first user is considered as "default" user and needs to import the keys 
+    # via the global ssh_import_id. Any other user would receive the keys via the
+    # users section. see https://github.com/canonical/cloud-init/issues/4306
+    ssh_import_id: 
+      - gh:phish108
+        
     users: 
       - name: multimico
         passwd: "$6$rounds=4096$88d20636d3$hfs3chRNQ5UEDtzXysdkx.NhtTCN8kpefW3.tWCFuKR5Bg6tJ7wbUhA2CwyUtWeRy7l4LeY0qmNyJm73CAlkP1"
+        lock_passwd: false
+
+        # ssh_import_id: 
+        #   - gh:phish108
+
         shell: /bin/bash
-        ssh_import_id: 
-          - gh:phish108
+
         groups:
           - sudo
-          - lxd
           - adm
           - plugdev
           - cdrom
-        lock_passwd: false
+
     package_update: true
     package_upgrade: true
     package_reboot_if_required: true
@@ -157,14 +167,14 @@ autoinstall:
       - openvswitch-switch-dpdk
       - libosinfo-bin
       - whois
-    write_files: 
-      - path: /etc/cloud/cloud-init.disabled
-        content: " "
+    # write_files: 
+    #   - path: /etc/cloud/cloud-init.disabled
+    #     content: " "
     # the following commands run after all package updates and installs
-    runcmd:
+    runcmd: []
       # bootstrap the machine specific installation
-      - mkdir -p /run/multimico/init
-      - git clone https://github.com/multimico/init.git /run/multimico/init
+      # - mkdir -p /run/multimico/init
+      # - git clone https://github.com/multimico/init.git /run/multimico/init
       # - sh /run/multimico/init/bin/init.sh  
       
   
