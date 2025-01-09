@@ -176,5 +176,8 @@ autoinstall:
       # - sh /run/multimico/init/bin/init.sh  
       
       # finally disable cloud-init
+      # This MUST NOT be created via write_files as this would create the file before 
+      # the first reboot. This would cause cloud-init not to run for the first time. So we
+      # disable cloud-init once it is finished. 
       - touch /etc/cloud/cloud-init.disabled
   
