@@ -161,10 +161,10 @@ autoinstall:
       - path: /etc/cloud/cloud-init.disabled
         content: " "
     # the following commands run after all package updates and installs
-    # runcmd:
+    runcmd:
       # bootstrap the machine specific installation
-      # - mkdir -p /run/multimico/init
-      # - git clone https://github.com/multimico/init.git /run/multimico/init
+      - mkdir -p /run/multimico/init
+      - git clone https://github.com/multimico/init.git /run/multimico/init
       # - sh /run/multimico/init/bin/init.sh  
       
   
