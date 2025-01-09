@@ -87,11 +87,10 @@ autoinstall:
           - cdrom
 
     ssh_pwauth: false
-    
+
     chpasswd: 
+      users:
       - name: multimico
-        expire: False
-        lock_passwd: False
         password: "$6$rounds=4096$88d20636d3$hfs3chRNQ5UEDtzXysdkx.NhtTCN8kpefW3.tWCFuKR5Bg6tJ7wbUhA2CwyUtWeRy7l4LeY0qmNyJm73CAlkP1"
 
     package_update: true
