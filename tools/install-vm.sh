@@ -67,7 +67,7 @@ fi
 # If no username is given as parameter, ask for a username
 if [ -z $USERNAME ]
 then
-    TMPUSERNAME=`whoami`
+    TMPUSERNAME=$(whoami)
     read -p "System User Name [default $TMPUSERNAME]: " USERNAME
 
     if [ -z $USERNAME ]
@@ -102,9 +102,9 @@ echo
 
 
 # Hash the password for cloud init
-PWSALT=`echo $RANDOM | md5sum | head -c 10`
+PWSALT=$(echo $RANDOM | md5sum | head -c 10)
 
-CRYPTPASSWD=`echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s`
+CRYPTPASSWD=$(echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s)
 
 # echo "init $HOSTNAME"
 
@@ -113,20 +113,20 @@ export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME
 
 CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
 
-lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
+incus init -p $PROFILE ${OSNAME}/$OSVERSION/cloud $HOSTNAME
 echo "${CIDATA}" | lxc config set $HOSTNAME user.user-data -
-lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
+incus config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 if [ ! -z $CPULIMIT ] 
 then
-    lxc config set $HOSTNAME limits.cpu $CPULIMIT
+    incus config set $HOSTNAME limits.cpu $CPULIMIT
 fi
 
 if [ ! -z $MEMLIMIT ] 
 then
-    lxc config set $HOSTNAME limits.memory ${MEMLIMIT}GB
+    incus config set $HOSTNAME limits.memory ${MEMLIMIT}GB
 fi
 
 
 # echo "Starting System $HOSTNAME"
-lxc start $HOSTNAME
+incus start $HOSTNAME

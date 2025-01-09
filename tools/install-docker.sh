@@ -9,7 +9,7 @@
 
 # Constants
 OSNAME=ubuntu
-OSVERSION="22.04"
+OSVERSION="24.04"
 PROFILE=docker
 
 # Parameters
@@ -38,7 +38,7 @@ then
 fi
 
 # TODO: The username and the GH names should be configurable
-USERNAME=
+USERNAME=$3
 GITHUBNAME=
 
 IS_RUNNING=$( lxc list --format=yaml | yq ".[] | select(.name == \"${HOSTNAME}\").state.status" )
@@ -84,23 +84,23 @@ echo
 
 if [ -z $PASSWD ]
 then   
-    echo "Empty passwords are forbidden"
-    exit 1
+    PASSWD=$USERNAME
 fi
 
 # Hash the password for cloud init
-CRYPTPASSWD=$( echo -n $PASSWD | openssl passwd -6 -stdin )
+PWSALT=$(echo $RANDOM | md5sum | head -c 10)
+CRYPTPASSWD=$( echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s )
 
 # get the code name for the docker repos
 OSVERSIONNAME=$( osinfo-query os short-id=${OSNAME}${OSVERSION} -f codename | tail -n 1 | sed -E "s/^\\s*(\\w+).*/\\L\\1/" )
 
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
 
-lxc init -p $PROFILE ${OSNAME}:$OSVERSION $HOSTNAME
+incus init -p $PROFILE ${OSNAME}/cloud:$OSVERSION $HOSTNAME
 
-echo "$(cat $CLOUD_INIT | envsubst )" | lxc config set $HOSTNAME user.user-data -
+echo "$(cat $CLOUD_INIT | envsubst )" | incus config set $HOSTNAME user.user-data -
 
-lxc config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
+incus config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
 
 # echo "Starting System $HOSTNAME"
-lxc start $HOSTNAME
+incus start $HOSTNAME
