@@ -135,13 +135,9 @@ autoinstall:
 
   user-data:
     timezone: Europe/Zurich
-    # hostname: multimico
 
-    # the first user is considered as "default" user and needs to import the keys 
-    # via the global ssh_import_id. Any other user would receive the keys via the
-    # users section. see https://github.com/canonical/cloud-init/issues/4306
-    # ssh_import_id: 
-    #   - gh:phish108
+    # The hostname should be set via DHCP.
+    # hostname: multimico
         
     users: 
       - name: multimico
@@ -167,14 +163,26 @@ autoinstall:
       - openvswitch-switch-dpdk
       - libosinfo-bin
       - whois
+  
     # the following commands run after all package updates and installs
     runcmd:
       # bootstrap the machine specific installation
-      - mkdir -p /run/multimico/init
-      # - mkdir -p /run/multimico/init
-      # - git clone https://github.com/multimico/init.git /run/multimico/init
-      # - sh /run/multimico/init/bin/init.sh  
-      
+      # install incus
+      - mkdir -p /etc/apt/keyrings/
+      - curl -fsSL https://pkgs.zabbly.com/key.asc -o /etc/apt/keyrings/zabbly.asc
+      - |
+        sh -c 'cat <<EOF > /etc/apt/sources.list.d/zabbly-incus-stable.sources
+        Enabled: yes
+        Types: deb
+        URIs: https://pkgs.zabbly.com/incus/stable
+        Suites: $(. /etc/os-release && echo ${VERSION_CODENAME})
+        Components: main
+        Architectures: $(dpkg --print-architecture)
+        Signed-By: /etc/apt/keyrings/zabbly.asc
+        EOF'
+      - apt update
+      - apt install -y incus-basic incus-extra
+
       # finally disable cloud-init
       # This MUST NOT be created via write_files as this would create the file before 
       # the first reboot. This would cause cloud-init not to run for the first time. So we
