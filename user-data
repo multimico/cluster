@@ -19,7 +19,7 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: false
-
+  
   keyboard: 
     layout: us
     toggle: null
@@ -67,7 +67,7 @@ autoinstall:
     timezone: Europe/Zurich
 
     # The hostname should be set via DHCP.
-    # hostname: multimico
+    hostname: multimico
         
     users: 
       - name: multimico
@@ -85,6 +85,14 @@ autoinstall:
           - adm
           - plugdev
           - cdrom
+
+    ssh_pwauth: false
+    
+    chpasswd: 
+      - name: multimico
+        expire: False
+        lock_passwd: False
+        password: "$6$rounds=4096$88d20636d3$hfs3chRNQ5UEDtzXysdkx.NhtTCN8kpefW3.tWCFuKR5Bg6tJ7wbUhA2CwyUtWeRy7l4LeY0qmNyJm73CAlkP1"
 
     package_update: true
     package_upgrade: true
