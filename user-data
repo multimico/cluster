@@ -14,15 +14,19 @@ autoinstall:
      - arches: [default]
        uri: http://ports.ubuntu.com/ubuntu-ports
     # Repos for extra packages must go into sources. 
-    #sources: 
+    # sources: 
+
   ssh:
     install-server: true
     allow-pw: false
+
   keyboard: 
     layout: us
     toggle: null
     variant: ''
+
   locale: C
+
   network:
     version: 2
     ethernets:
@@ -30,80 +34,6 @@ autoinstall:
         match:
           name: "en*"
         dhcp4: true
-  # storage:
-  #   config:
-  #     # drive Hardware
-  #     - ptable: gpt
-  #       path: /dev/sda
-  #       wipe: superblock
-  #       preserve: false
-  #       name: ''
-  #       grub_device: false
-  #       type: disk
-  #       id: disk-sda
-  #       # use mating only without path.
-  #       # match:
-  #       #   # ssd: yes
-  #       #   size: largest
-  #     # uefi (bios partition) ~512MB
-  #     # Ubuntu uses now 1GB
-  #     - device: disk-sda
-  #       size: 1073741824
-  #       wipe: superblock
-  #       flag: boot
-  #       number: 1
-  #       preserve: false
-  #       grub_device: true
-  #       type: partition
-  #       id: partition-0
-  #     - fstype: fat32
-  #       volume: partition-0
-  #       preserve: false
-  #       type: format
-  #       id: format-0
-  #     - device: format-0
-  #       path: /boot/efi
-  #       type: mount
-  #       id: mount-0
-  #     # 2GB Boot Partition
-  #     - device: disk-sda
-  #       size: 2147483648
-  #       wipe: superblock
-  #       flag: ''
-  #       number: 2
-  #       preserve: false
-  #       grub_device: false
-  #       type: partition
-  #       id: partition-1
-  #     - fstype: ext4
-  #       volume: partition-1
-  #       preserve: false
-  #       type: format
-  #       id: format-1
-  #     - device: format-1
-  #       path: /boot
-  #       type: mount
-  #       id: mount-1
-  #     # rest is for the core OS (no swap!)
-  #     - device: disk-sda
-  #       # use all the remaining space (in case we have different drive sizes)
-  #       size: -1
-  #       wipe: superblock
-  #       flag: ''
-  #       number: 3
-  #       preserve: false
-  #       grub_device: false
-  #       type: partition
-  #       id: partition-2
-  #     - fstype: ext4
-  #       volume: partition-2
-  #       preserve: false
-  #       type: format
-  #       id: format-2
-  #     - device: format-2
-  #       path: /
-  #       type: mount
-  #       id: mount-2
   
   disk_setup:
     /dev/sda: 
@@ -146,6 +76,7 @@ autoinstall:
 
         ssh_import_id: 
           - gh:phish108
+          - gh:grahanoi
 
         shell: /bin/bash
 
@@ -167,6 +98,7 @@ autoinstall:
     # the following commands run after all package updates and installs
     runcmd:
       # bootstrap the machine specific installation
+      #
       # install incus
       - mkdir -p /etc/apt/keyrings/
       - curl -fsSL https://pkgs.zabbly.com/key.asc -o /etc/apt/keyrings/zabbly.asc
@@ -182,12 +114,17 @@ autoinstall:
         EOF'
       - apt update
       - apt install -y incus-base incus-extra
+
       # add the incus-admin user
       - adduser multimico incus-admin
 
-      # finally disable cloud-init
+      # install our internal maintenance tools from github
+
+      # first layer of defense - ufw 
+      
+      # finally, disable cloud-init
+      #
       # This MUST NOT be created via write_files as this would create the file before 
       # the first reboot. This would cause cloud-init not to run for the first time. So we
-      # disable cloud-init once it is finished. 
+      # disable cloud-init once everything has finished. 
       - touch /etc/cloud/cloud-init.disabled
-  
