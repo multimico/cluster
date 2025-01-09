@@ -30,93 +30,118 @@ autoinstall:
         match:
           name: "en*"
         dhcp4: true
-  storage:
-    config:
-      # drive Hardware
-      - ptable: gpt
-        # serial: SanDisk_SD9SN8W2T001122_20233B800056
-        # wwn: '0x5001b448b5723436'
-        path: /dev/sda
-        wipe: superblock
-        preserve: false
-        name: ''
-        grub_device: false
-        type: disk
-        id: disk-sda
-        match:
-          # ssd: yes
-          size: largest
-      # efi (bios partition) ~512MB
-      # Ubuntu uses now 1GB
-      - device: disk-sda
-        size: 1073741824
-        wipe: superblock
-        flag: boot
-        number: 1
-        preserve: false
-        grub_device: true
-        type: partition
-        id: partition-0
-      - fstype: fat32
-        volume: partition-0
-        preserve: false
-        type: format
-        id: format-0
-      - device: format-0
-        path: /boot/efi
-        type: mount
-        id: mount-0
-      # 2GB Boot Partition
-      - device: disk-sda
-        size: 2147483648
-        wipe: superblock
-        flag: ''
-        number: 2
-        preserve: false
-        grub_device: false
-        type: partition
-        id: partition-1
-      - fstype: ext4
-        volume: partition-1
-        preserve: false
-        type: format
-        id: format-1
-      - device: format-1
-        path: /boot
-        type: mount
-        id: mount-1
-      # ~ 1.8TB System Data
-      - device: disk-sda
-        # size: 2046795186176
-        # use all the remaining space (in case we have different drive sizes)
-        size: -1
-        wipe: superblock
-        flag: ''
-        number: 3
-        preserve: false
-        grub_device: false
-        type: partition
-        id: partition-2
-      - fstype: ext4
-        volume: partition-2
-        preserve: false
-        type: format
-        id: format-2
-      - device: format-2
-        path: /
-        type: mount
-        id: mount-2
+  # storage:
+  #   config:
+  #     # drive Hardware
+  #     - ptable: gpt
+  #       path: /dev/sda
+  #       wipe: superblock
+  #       preserve: false
+  #       name: ''
+  #       grub_device: false
+  #       type: disk
+  #       id: disk-sda
+  #       # use mating only without path.
+  #       # match:
+  #       #   # ssd: yes
+  #       #   size: largest
+  #     # uefi (bios partition) ~512MB
+  #     # Ubuntu uses now 1GB
+  #     - device: disk-sda
+  #       size: 1073741824
+  #       wipe: superblock
+  #       flag: boot
+  #       number: 1
+  #       preserve: false
+  #       grub_device: true
+  #       type: partition
+  #       id: partition-0
+  #     - fstype: fat32
+  #       volume: partition-0
+  #       preserve: false
+  #       type: format
+  #       id: format-0
+  #     - device: format-0
+  #       path: /boot/efi
+  #       type: mount
+  #       id: mount-0
+  #     # 2GB Boot Partition
+  #     - device: disk-sda
+  #       size: 2147483648
+  #       wipe: superblock
+  #       flag: ''
+  #       number: 2
+  #       preserve: false
+  #       grub_device: false
+  #       type: partition
+  #       id: partition-1
+  #     - fstype: ext4
+  #       volume: partition-1
+  #       preserve: false
+  #       type: format
+  #       id: format-1
+  #     - device: format-1
+  #       path: /boot
+  #       type: mount
+  #       id: mount-1
+  #     # rest is for the core OS (no swap!)
+  #     - device: disk-sda
+  #       # use all the remaining space (in case we have different drive sizes)
+  #       size: -1
+  #       wipe: superblock
+  #       flag: ''
+  #       number: 3
+  #       preserve: false
+  #       grub_device: false
+  #       type: partition
+  #       id: partition-2
+  #     - fstype: ext4
+  #       volume: partition-2
+  #       preserve: false
+  #       type: format
+  #       id: format-2
+  #     - device: format-2
+  #       path: /
+  #       type: mount
+  #       id: mount-2
   
+  disk_setup:
+    /dev/sda: 
+      table_type: gpt
+      layout: 
+        - 0.5
+        - 1
+        - 98.5
+      overwrite: true
+      # grub_device: false
+      type: disk
+
+  fs_setup:
+    - device: /dev/sda1
+      filesystem: fat32
+      label: EFI
+      overwrite: false
+      type: format
+    - device: /dev/sda2
+      filesystem: ext4
+      label: BOOT
+      overwrite: false
+      type: format
+    - device: /dev/sda3
+      filesystem: ext4
+      label: ROOT
+      overwrite: false
+      type: format
+
   user-data:
     timezone: Europe/Zurich
     hostname: multimico
     users: 
-      - name: dxiai
-        passwd: "$6$GZ2QZKpiMQIhRI/O$E2QgSCFz9MsWhOgV9zdFUEGbpLrExXEZ5XZrpjZbjMZcUg5sq8ozJU074qBEWfvs8c9zrQdbzsNr9w7J7PAuH."
+      - name: multimico
+        passwd: "$6$rounds=4096$88d20636d3$hfs3chRNQ5UEDtzXysdkx.NhtTCN8kpefW3.tWCFuKR5Bg6tJ7wbUhA2CwyUtWeRy7l4LeY0qmNyJm73CAlkP1"
         shell: /bin/bash
         ssh_import_id: 
           - gh:phish108
-          - gh:bajkad
         groups:
           - sudo
           - lxd
@@ -131,14 +156,15 @@ autoinstall:
       - petname
       - openvswitch-switch-dpdk
       - libosinfo-bin
+      - whois
     write_files: 
       - path: /etc/cloud/cloud-init.disabled
         content: " "
     # the following commands run after all package updates and installs
     runcmd:
       # bootstrap the machine specific installation
-      - mkdir -p /run/multimico/init
-      - git clone https://github.com/multimico/init.git /run/multimico/init
-      - sh /run/multimico/init/bin/init.sh  
+      # - mkdir -p /run/multimico/init
+      # - git clone https://github.com/multimico/init.git /run/multimico/init
+      # - sh /run/multimico/init/bin/init.sh  
       
   
