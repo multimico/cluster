@@ -101,8 +101,6 @@ fi
 # read -p "Memory Limit in GB (empty for no limit): " MEMLIMIT
 # echo
 
-
-
 # Hash the password for cloud init
 PWSALT=$(echo $RANDOM | md5sum | head -c 10)
 
@@ -116,23 +114,9 @@ export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME
 # CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
 CIDATA=$(cat $CLOUD_INIT | envsubst )
 
-
 incus init -p $PROFILE ${OSNAME}/$OSVERSION/cloud $HOSTNAME
 echo "${CIDATA}" | incus config set $HOSTNAME user.user-data -
 
 
-incus config set $HOSTNAME volatile.eth0.hwaddr $MACADDRESS
-
-if [ ! -z $CPULIMIT ] 
-then
-    incus config set $HOSTNAME limits.cpu $CPULIMIT
-fi
-
-if [ ! -z $MEMLIMIT ] 
-then
-    incus config set $HOSTNAME limits.memory ${MEMLIMIT}GB
-fi
-
-
 # echo "Starting System $HOSTNAME"
-incus start $HOSTNAME
+# incus start $HOSTNAME
