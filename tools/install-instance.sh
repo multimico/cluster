@@ -20,7 +20,7 @@ HOSTNAME=$(petname)
 OSNAME=ubuntu
 OSVERSION="24.04"
 
-CLOUD_INIT=${CDIR}/profiles/cloud_init.cfg
+CLOUD_INIT=~/tools/cluster-config/profiles/cloud_init.cfg
 
 # Parameters
 # HOSTNAME=$1
