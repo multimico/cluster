@@ -23,7 +23,8 @@ OSVERSION="24.04"
 CLOUD_INIT=~/tools/cluster-config/profiles/cloud_init.cfg
 
 # Parameters
-# HOSTNAME=$1
+
+TARGET=$3
 
 # TODO: The username and the GH names should be configurable
 USERNAME=$1
@@ -114,7 +115,12 @@ export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME
 # CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
 CIDATA=$(cat $CLOUD_INIT | envsubst )
 
-incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME
+if [ -z $TARGET ]
+then
+    incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME
+else 
+    incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME --target $TARGET
+fi
 echo "${CIDATA}" | incus config set $HOSTNAME user.user-data -
 
 
