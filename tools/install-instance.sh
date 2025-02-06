@@ -114,7 +114,7 @@ export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME
 # CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
 CIDATA=$(cat $CLOUD_INIT | envsubst )
 
-incus init -p $PROFILE ${OSNAME}/$OSVERSION/cloud $HOSTNAME
+incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME
 echo "${CIDATA}" | incus config set $HOSTNAME user.user-data -
 
 
