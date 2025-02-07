@@ -42,4 +42,5 @@ else
     incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME --target $TARGET
 fi
 
-echo "${CIDATA}" | incus config set $HOSTNAME user.user-data -
+echo "${CIDATA}" | incus config set $HOSTNAME cloud-init.user-data -
+cat ~/tools/cluster-config/profiles/network_init.cfg | incus config set $HOSTNAME cloud-init.network-config -
