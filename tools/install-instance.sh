@@ -15,13 +15,6 @@
 
 HOSTNAME=$(petname)
 
-# Variables
-# TODO: We want to customise the image
-OSNAME=ubuntu
-OSVERSION="24.04"
-
-CLOUD_INIT=~/tools/cluster-config/profiles/cloud_init.cfg
-
 # Parameters
 
 TARGET=$3
@@ -110,19 +103,9 @@ CRYPTPASSWD=$(echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s)
 # echo "init $HOSTNAME"
 
 # echo "inject cloud init user-data"
-export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME RELEASE=$OSVERSIONNAME
+export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME TAGET=$TARGET
 
-# CIDATA=$(cat $CLOUD_INIT | envsubst | yq ".users[].ssh_import_id = (load(\"${CDIR}/nodes/hardware_macs.yaml\").nodes[] | select(.name == \"${HOSTNAME}\" ).ssh-ids)" )
-CIDATA=$(cat $CLOUD_INIT | envsubst )
-
-if [ -z $TARGET ]
-then
-    incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME
-else 
-    incus init -p $PROFILE images:${OSNAME}/${OSVERSION}/cloud $HOSTNAME --target $TARGET
-fi
-echo "${CIDATA}" | incus config set $HOSTNAME user.user-data -
-
+./setup-instance.sh
 
 # echo "Starting System $HOSTNAME"
 # incus start $HOSTNAME
