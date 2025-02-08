@@ -36,6 +36,7 @@ CIDATA=$(cat $CLOUD_INIT | envsubst )
 # TODO extend CIDATA based on the profile
 
 echo $TARGET
+echo $PROFILE
 
 if [ -z "$TARGET" ]
 then
