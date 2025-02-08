@@ -17,7 +17,7 @@ HOSTNAME=$(petname)
 
 # Parameters
 
-TARGET=$3
+TARGET=${3%$'\n'}
 
 # TODO: The username and the GH names should be configurable
 USERNAME=$1
