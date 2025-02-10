@@ -105,8 +105,6 @@ CRYPTPASSWD=$(echo -n $PASSWD | mkpasswd -m sha-512 -R 4096 -S $PWSALT -s)
 # echo "inject cloud init user-data"
 export HOSTNAME=$HOSTNAME USERNAME=$USERNAME CRYPTPASSWD=$CRYPTPASSWD GITHUBNAME=$GITHUBNAME TARGET=$TARGET PROFILE=$PROFILE
 
-echo $TARGET
-
 ./setup-instance.sh
 
 # echo "Starting System $HOSTNAME"
