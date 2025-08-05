@@ -1,6 +1,14 @@
+# Cluster Installation
+
 This guide explains to pull up a **three node incus cluster** with OVN virtual networks. 
 
-# Setup Ubuntu Server 
+## Setup Ubuntu Server 
+
+Using ISOs
+
+## Ensuring secure remote connectivity
+
+ssh-import-id 
 
 ## Network preparations
 
