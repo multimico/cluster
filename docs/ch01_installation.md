@@ -179,3 +179,6 @@ Incus will take over the control of OVN. We hardly interact with OVN directly.
 incus config set network.ovn.northbound_connection "tcp:<server_1>:6641,tcp:<server_2>:6641,tcp:<server_3>:6641"
 ```
 
+# Next Steps
+
+- [Send OVN logs to incus](https://linuxcontainers.org/incus/docs/main/howto/network_ovn_setup/#send-ovn-logs-to-incus) 
