@@ -6,7 +6,19 @@ This guide explains to pull up a **three node incus cluster** with OVN virtual n
 
 Using ISOs
 
+Partition only the system drive
+
+No SWAP
+
+User Management
+
+Ansible
+
 ## Ensuring secure remote connectivity
+
+SSH 
+
+Public Key Distribution (via GH)
 
 ssh-import-id 
 
