@@ -48,6 +48,8 @@ The same must be repeated for all interfaces that should be used by the cluster.
 Replacing a hardware interface with a bridge interface does not interrupt the 
 network connection. It is safe to call `sudo netplan apply` over an SSH connection. 
 
+> **Important** It is not possible to ping a bridged interface from a node that is connected to the very device. 
+
 ## Additional packages 
 
 The following base packages should be installed: 
