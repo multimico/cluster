@@ -18,6 +18,18 @@ Overall installation sequence is:
 
 ## preparations
 
+The ceph docu requests ssh connections into the root user. This is never a good idea. However, to allow one must adapt `/etc/ssh/sshd_config` on host 1 and 2. 
+
+Add the following lines: 
+
+```
+PermitRootLogin prohibit-password
+PubkeyAuthentication yes
+PasswordAuthentication no
+```
+
+The preferred workaround is to have a user that can run sudo without password. 
+
 Ensure that all ceph hosts can connect via `ssh` PK authentication. 
 
 ```bash
