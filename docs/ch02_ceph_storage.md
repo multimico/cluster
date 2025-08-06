@@ -115,6 +115,8 @@ ceph orch apply mds incusfs-mds 'clt-lab-n-118[012]'
 ceph status
 ```
 
+> **Note to self.** I have not tested if just launching the MDS (metadata service) would be sufficient. 
+
 for incus run the following commands: 
 
 ```bash
