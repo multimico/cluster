@@ -30,7 +30,7 @@ PasswordAuthentication no
 
 The preferred workaround is to have a user that can run sudo without password. 
 
-Ensure that all ceph hosts can connect via `ssh` PK authentication. 
+Ensure that all ceph hosts can connect via `ssh` PK authentication for the regular user as well as for `root`. 
 
 ```bash
 ssh-keygen
