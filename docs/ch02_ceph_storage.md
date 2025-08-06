@@ -52,7 +52,7 @@ Host *
         SetEnv TERM=xterm-256color
 ```
 
-This allows us to create ssh connections over the internet network.
+This allows us to create ssh connections over the internal (data) network using fake names. If we use the regular hostnames, we will connect over the public network. 
 
 ## Install ceph
 
