@@ -25,6 +25,23 @@ ssh-keygen
 ssh-copy-id 
 ```
 
+add `.ssh/config` on host 0.
+
+```
+Host server-1
+        HostName 192.168.1.81
+        User multimico
+
+Host server-2
+        HostName 192.168.1.82
+        User multimico
+
+Host *
+        SetEnv TERM=xterm-256color
+```
+
+This allows us to create ssh connections over the internet network.
+
 ## Install ceph
 
 only the first host needs cephadmin.
