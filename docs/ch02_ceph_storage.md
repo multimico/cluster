@@ -31,9 +31,23 @@ only the first host needs cephadmin.
 
 follow the instructions for the first node.
 
+```bash
+cephadm bootstrap --mon-ip
+
+# Add the other hosts into the system, let ceph launch the services.
+ceph orch host add clt-lab-n-1181 192.168.1.81 _admin
+ceph orch host add clt-lab-n-1181 192.168.1.82 _admin
+```
+
 check `ceph status` if the single node is working
 
 Add new nodes with `ceph orch host add HOSTNAME IP-Address _admin`. The `HOSTNAME` must be the same as the shown by `hostname` on the node. ceph will complain if the names are not matching. 
+
+Inform ceph not to be greedy on the system resources. Otherwise the ceph will eat all memory and cpu
+```bash
+ceph config set mgr mgr/cephadm/autotune_memory_target_ratio 0.2
+ceph config set osd osd_memory_target_autotune true
+```
 
 ## Disable the dashboard
 
@@ -45,7 +59,11 @@ ceph mgr module diable dashboard
 
 ## Assigning Physical Hardware
 
+Let ceph get all disks that are currently not used by the system. This takes a few moments before it is reflected in `ceph status`
 
+```bash
+ceph orch apply osd --all-available-devices
+```
 
 ## Incus integration 
 
