@@ -29,10 +29,11 @@ ssh-copy-id
 
 only the first host needs cephadmin.
 
-follow the instructions for the first node.
+If possible move ceph networking to a separate data-network (here `192.168.1.0`). This tells ceph that it should 
+communicate via that network and not via the public network of the host. 
 
 ```bash
-cephadm bootstrap --mon-ip
+cephadm bootstrap --mon-ip 192.168.1.80
 
 # Add the other hosts into the system, let ceph launch the services.
 ceph orch host add clt-lab-n-1181 192.168.1.81 _admin
